@@ -121,7 +121,7 @@ function App() {
                             });
                             console.log("result", requestResult)
 
-                            alert("HASH: " + requestResult)
+                            alert("HASH: " + requestResult.transactionHash)
                         } catch (e) {
                             console.error(e)
                             alert("something went wrong:" + e)
@@ -168,7 +168,7 @@ function App() {
                             });
                             console.log("result", requestResult)
 
-                            alert("HASH: " + requestResult)
+                            alert("HASH: " + requestResult.transactionHash)
                         } catch (e) {
                             console.error(e)
                             alert("something went wrong:" + e)
