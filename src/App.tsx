@@ -4,7 +4,7 @@ import './App.css';
 import Space from "./Space";
 import { useAccount } from "wagmi";
 import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit';
-import { waitForTransactionReceipt, writeContract } from "viem/actions";
+import { waitForTransactionReceipt, writeContract } from "@wagmi/core";
 import { config } from "./index";
 import { loanAbi } from "./loan";
 import { sbtAbi } from "./sbt";
@@ -17,8 +17,8 @@ function App() {
     const {address,} = useAccount();
 
     const loanContract = "0xbc96085f358BDd5E7fc96E3c72cba84f96031860";
-    const sbtA = "0xC419500efc25d0119E516A706F5FA7ee2Ce5a1E5";
-    const sbtB = "0xEE8F69D874Cd8e836C6A8a707710f4a23Ff5FE47";
+    const sbtA = "0x3036c0ecb8a32bD8775C06B848a8f184cD080376";
+    const sbtB = "0xBF18Cf3A9dC9bBB8eF75Ed40487CB7272118a8fa";
     const bugs = "0x9c0153C56b460656DF4533246302d42Bd2b49947";
 
 
@@ -106,21 +106,28 @@ function App() {
                         if (!address) {
                             return
                         }
-                        // @ts-ignore
-                        const requestHash = await writeContract(config, {
-                            address: loanContract,
-                            abi: loanAbi,
-                            functionName: 'borrow',
-                        })
-                        console.log("request hash: ", requestHash)
-                        // @ts-ignore
-                        const requestResult = await waitForTransactionReceipt(config, {
-                            hash: requestHash,
-                            pollingInterval: 1_000,
-                        });
-                        console.log("result", requestResult)
+                        try {
+                            // @ts-ignore
+                            const requestHash = await writeContract(config, {
+                                address: loanContract,
+                                abi: loanAbi,
+                                functionName: 'borrow',
+                            })
+                            console.log("request hash: ", requestHash)
+                            // @ts-ignore
+                            const requestResult = await waitForTransactionReceipt(config, {
+                                hash: requestHash,
+                                pollingInterval: 1_000,
+                            });
+                            console.log("result", requestResult)
 
-                        alert("HASH: " + requestResult)
+                            alert("HASH: " + requestResult)
+                        } catch (e) {
+                            console.error(e)
+                            alert("something went wrong:" + e)
+                            return
+                        }
+
                     }}
                 >
                     {"「LOAN 500 BUGS」"}
@@ -131,36 +138,42 @@ function App() {
                         if (!address) {
                             return
                         }
-                        // @ts-ignore
-                        const approveHash = await writeContract(config, {
-                            address: bugs,
-                            abi: erc20Abi,
-                            functionName: 'approve',
-                            args: [loanContract, BigInt(525 * 10 ** 18)]
-                        })
-                        console.log("request hash: ", approveHash)
-                        // @ts-ignore
-                        const approveResult = await waitForTransactionReceipt(config, {
-                            hash: approveHash,
-                            pollingInterval: 1_000,
-                        });
-                        console.log("result", approveResult)
+                        try {
+                            // @ts-ignore
+                            const approveHash = await writeContract(config, {
+                                address: bugs,
+                                abi: erc20Abi,
+                                functionName: 'approve',
+                                args: [loanContract, BigInt(525 * 10 ** 18)]
+                            })
+                            console.log("request hash: ", approveHash)
+                            // @ts-ignore
+                            const approveResult = await waitForTransactionReceipt(config, {
+                                hash: approveHash,
+                                pollingInterval: 1_000,
+                            });
+                            console.log("result", approveResult)
 
-                        // @ts-ignore
-                        const requestHash = await writeContract(config, {
-                            address: loanContract,
-                            abi: loanAbi,
-                            functionName: 'repay',
-                        })
-                        console.log("request hash: ", requestHash)
-                        // @ts-ignore
-                        const requestResult = await waitForTransactionReceipt(config, {
-                            hash: requestHash,
-                            pollingInterval: 1_000,
-                        });
-                        console.log("result", requestResult)
+                            // @ts-ignore
+                            const requestHash = await writeContract(config, {
+                                address: loanContract,
+                                abi: loanAbi,
+                                functionName: 'repay',
+                            })
+                            console.log("request hash: ", requestHash)
+                            // @ts-ignore
+                            const requestResult = await waitForTransactionReceipt(config, {
+                                hash: requestHash,
+                                pollingInterval: 1_000,
+                            });
+                            console.log("result", requestResult)
 
-                        alert("HASH: " + requestResult)
+                            alert("HASH: " + requestResult)
+                        } catch (e) {
+                            console.error(e)
+                            alert("something went wrong:" + e)
+                            return
+                        }
                     }}
                 >
                     {"「PAY 525 BUGS」"}
