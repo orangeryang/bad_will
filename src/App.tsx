@@ -65,7 +65,8 @@ function App() {
             </div>
             <Space/>
             <div className={"sixtyFour"}>
-                WELCOME TO <span className={"yellow"}>[BADWILL]</span>, STUMP [{address}]
+                WELCOME TO <span className={"yellow"}>[BADWILL]</span>, STUMP <span
+                className={"yellow"}>[{address}]</span>
             </div>
             <Space/>
             <div className={"sixtyFour purple"}>
@@ -102,6 +103,9 @@ function App() {
                 <button
                     className={"b sixtyFour"} style={{width: "250px"}}
                     onClick={async () => {
+                        if (!address) {
+                            return
+                        }
                         // @ts-ignore
                         const requestHash = await writeContract(config, {
                             address: loanContract,
@@ -124,6 +128,9 @@ function App() {
                 <button
                     className={"b sixtyFour"} style={{width: "250px", marginLeft: "30px"}}
                     onClick={async () => {
+                        if (!address) {
+                            return
+                        }
                         // @ts-ignore
                         const approveHash = await writeContract(config, {
                             address: bugs,
